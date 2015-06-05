@@ -1,0 +1,3 @@
+[submodule "Tectonic-Src"]
+	path = Tectonic-Src
+	url = https://github.com/JohnLouderback/Tectonic.git
