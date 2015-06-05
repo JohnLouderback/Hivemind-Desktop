@@ -1,8 +1,16 @@
 /// <reference path="../Tint.d.ts"/>
+declare var global;
 
 require('Common');
-var CaptionButton = require('./windows/CaptionButton.js');
-var $ = process.bridge.dotnet;
+var platform = App.model.runtime.platform;
+var platformIsWin: boolean = (platform === Platforms.WIN);
+var platformIsOsx: boolean = (platform === Platforms.OSX);
+if(platformIsWin) {
+	var CaptionButton = require('./windows/CaptionButton.js');
+}
+var $ = platformIsWin ? process.bridge.dotnet : process.bridge.objc;
+
+
 
 export class Win {
 	public tintWindow;
@@ -10,7 +18,9 @@ export class Win {
 
 	constructor(options?) {
 		this.tintWindow = new Window();
-		this.applyWindowChromeWindows();
+		if(platformIsWin) {
+			this.applyWindowChromeWindows();
+		}
 		this.tintWindow.backgroundColor = '#222426';
 		this.tintWindow.visible = true;
 		this.tintWindow.addEventListener('maximize', this.maximizeHandler);
@@ -18,13 +28,17 @@ export class Win {
 	}
 
 	private maximizeHandler = () => {
-		this.closeButton.container.top = 5;
-		this.closeButton.container.right = 10;
+		if(platformIsWin) {
+			this.closeButton.container.top = 5;
+			this.closeButton.container.right = 10;
+		}
 	};
 
 	private restoreHandler = () => {
-		this.closeButton.container.top = 1;
-		this.closeButton.container.right = 5;
+		if(platformIsWin) {
+			this.closeButton.container.top = 1;
+			this.closeButton.container.right = 5;
+		}
 	};
 
 	private applyWindowChromeWindows() {

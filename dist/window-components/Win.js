@@ -1,20 +1,31 @@
 /// <reference path="../Tint.d.ts"/>
 require('Common');
-var CaptionButton = require('./windows/CaptionButton.js');
-var $ = process.bridge.dotnet;
+var platform = App.model.runtime.platform;
+var platformIsWin = (platform === Platforms.WIN);
+var platformIsOsx = (platform === Platforms.OSX);
+if (platformIsWin) {
+    var CaptionButton = require('./windows/CaptionButton.js');
+}
+var $ = platformIsWin ? process.bridge.dotnet : process.bridge.objc;
 var Win = (function () {
     function Win(options) {
         var _this = this;
         this.maximizeHandler = function () {
-            _this.closeButton.container.top = 5;
-            _this.closeButton.container.right = 10;
+            if (platformIsWin) {
+                _this.closeButton.container.top = 5;
+                _this.closeButton.container.right = 10;
+            }
         };
         this.restoreHandler = function () {
-            _this.closeButton.container.top = 1;
-            _this.closeButton.container.right = 5;
+            if (platformIsWin) {
+                _this.closeButton.container.top = 1;
+                _this.closeButton.container.right = 5;
+            }
         };
         this.tintWindow = new Window();
-        this.applyWindowChromeWindows();
+        if (platformIsWin) {
+            this.applyWindowChromeWindows();
+        }
         this.tintWindow.backgroundColor = '#222426';
         this.tintWindow.visible = true;
         this.tintWindow.addEventListener('maximize', this.maximizeHandler);

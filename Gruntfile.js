@@ -10,7 +10,7 @@ module.exports = function(grunt) {
 				module: 'commonjs'
 			},
 			default : {
-				src: ["**/*.ts", "!node_modules/**/*.ts", "!components/**/*.ts", "!tectonic/**/*.ts", "!dist/**/*.ts"],
+				src: ["**/*.ts", "!node_modules/**/*.ts", "!components/**/*.ts", "!tectonic/**/*.ts", "!dist/**/*.ts", "!Tectonic-Src/**/*"],
 				outDir: 'dist/'
 			}
 		},
