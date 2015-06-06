@@ -1,5 +1,6 @@
 declare var require, global;
 require('Common');
+var json = require('jsonfile');
 var os = require('os');
 
 enum Platforms {
@@ -8,16 +9,27 @@ enum Platforms {
 }
 
 interface AppModel {
-	runtime: {
+	runtime?: {
 		platform: Platforms;
-	}
+	},
+	theme?: {
+		name: string;
+		window: {
+			appearance: string;
+			backgroundColor: string;
+			titleTextColor: string;
+		}
+	},
+	resourceStrings?: Object;
 }
 
 class App {
 	public static model: AppModel = {
 		runtime: {
 			platform: App.getPlatform()
-		}
+		},
+		theme: json.readFileSync('themes/dark/theme.json'),
+		resourceStrings: json.readFileSync('resources/english.json'),
 	};
 
 	public static initialize() {
@@ -39,4 +51,4 @@ global.Platforms = Platforms;
 App.initialize();
 var Win = require('./window-components/Win.js');
 
-new Win();
+var win = new Win();

@@ -1,0 +1,8 @@
+{
+  "name": "dark",
+  "window": {
+    "appearance": "dark",
+    "backgroundColor": "#222426",
+    "titleTextColor": "#ffffff"
+  }
+}

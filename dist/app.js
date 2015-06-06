@@ -1,4 +1,5 @@
 require('Common');
+var json = require('jsonfile');
 var os = require('os');
 var Platforms;
 (function (Platforms) {
@@ -22,7 +23,9 @@ var App = (function () {
     App.model = {
         runtime: {
             platform: App.getPlatform()
-        }
+        },
+        theme: json.readFileSync('themes/dark/theme.json'),
+        resourceStrings: json.readFileSync('resources/english.json'),
     };
     return App;
 })();
@@ -30,5 +33,5 @@ global.App = App;
 global.Platforms = Platforms;
 App.initialize();
 var Win = require('./window-components/Win.js');
-new Win();
+var win = new Win();
 //# sourceMappingURL=app.js.map

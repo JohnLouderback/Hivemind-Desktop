@@ -1,5 +1,8 @@
 /// <reference path="../Tint.d.ts"/>
 require('Common');
+var merge = require('merge');
+var App = global.App;
+var Platforms = global.Platforms;
 var platform = App.model.runtime.platform;
 var platformIsWin = (platform === Platforms.WIN);
 var platformIsOsx = (platform === Platforms.OSX);
@@ -22,17 +25,57 @@ var Win = (function () {
                 _this.closeButton.container.right = 5;
             }
         };
+        options = options || {};
+        var defaultOpts = {
+            title: App.model.resourceStrings.appName,
+            width: 500,
+            height: 500
+        };
+        merge(options, defaultOpts);
         this.tintWindow = new Window();
         if (platformIsWin) {
             this.applyWindowChromeWindows();
         }
-        this.tintWindow.backgroundColor = '#222426';
+        else if (platformIsOsx) {
+            this.applyWindowChromeOsx();
+        }
+        this.title = options.title;
+        this.tintWindow.backgroundColor = App.model.theme.window.backgroundColor;
         this.tintWindow.visible = true;
         this.tintWindow.addEventListener('maximize', this.maximizeHandler);
         this.tintWindow.addEventListener('restore', this.restoreHandler);
     }
+    Object.defineProperty(Win.prototype, "title", {
+        get: function () {
+            return this.tintWindow.title;
+        },
+        set: function (value) {
+            this.tintWindow.title = value;
+            if (platformIsWin) {
+                this.titleText.value = value;
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Win.prototype.applyWindowChromeOsx = function () {
+        var win = this.tintWindow;
+        win.appearance = App.model.theme.window.appearance;
+        win.extendIntoTitle = true;
+        win.titleTransparent = true;
+    };
     Win.prototype.applyWindowChromeWindows = function () {
         var win = this.tintWindow;
+        var titleFont = new Font('Helvetica', 14);
+        titleFont.size = 14;
+        var titleText = this.titleText = new TextInput();
+        titleText.readonly = true;
+        titleText.textcolor = App.model.theme.window.titleTextColor;
+        titleText.value = '';
+        titleText.top = titleText.left = titleText.right = 0;
+        titleText.alignment = 'center';
+        titleText.font = titleFont;
+        win.appendChild(titleText);
         var winChrome = new $.System.Windows.Shell.WindowChrome;
         var winChromeGlassFrameThickness = new $.System.Windows.Thickness;
         winChromeGlassFrameThickness.left = winChromeGlassFrameThickness.right = winChromeGlassFrameThickness.top = 0;

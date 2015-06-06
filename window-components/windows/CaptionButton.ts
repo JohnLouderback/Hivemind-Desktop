@@ -30,25 +30,25 @@ export class CaptionButton {
 			height: 20,
 			onClick: () => {}
 		};
-		merge(defaultOpts, options);
+		merge(options, defaultOpts);
 		this.imageWell = new ImageWell();
-		this.imageWell.width = defaultOpts.width;
-		this.imageWell.height = defaultOpts.height;
+		this.imageWell.width = options.width;
+		this.imageWell.height = options.height;
 		this.imageWell.top = 0;
 		this.imageWell.left = 0;
 		this.image = "app://images/close-button.png";
 
 		this.imageWellHover = new ImageWell();
-		this.imageWellHover.width = defaultOpts.width;
-		this.imageWellHover.height = defaultOpts.height;
+		this.imageWellHover.width = options.width;
+		this.imageWellHover.height = options.height;
 		this.imageWellHover.alpha = 0;
 		this.imageWellHover.top = 0;
 		this.imageWellHover.left = 0;
 		this.imageHover = "app://images/close-button-hover.png";
 
 		this.container = new Container();
-		this.container.width = defaultOpts.width;
-		this.container.height = defaultOpts.height;
+		this.container.width = options.width;
+		this.container.height = options.height;
 		this.container.appendChild(this.imageWell);
 		this.container.appendChild(this.imageWellHover);
 
@@ -63,7 +63,7 @@ export class CaptionButton {
 		});
 
 		this.container.addEventListener('mouseup', function() {
-			defaultOpts.onClick();
+			options.onClick();
 		});
 	}
 }

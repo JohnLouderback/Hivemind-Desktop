@@ -3,7 +3,9 @@ declare var process,
 	exports,
 	module,
 	ImageWell,
-	Container;
+	Container,
+	TextInput,
+	Font;
 
 interface Window {
 	native: Object;
