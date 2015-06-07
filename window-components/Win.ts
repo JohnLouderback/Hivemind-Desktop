@@ -40,7 +40,7 @@ export class Win {
 			width: 500,
 			height: 500
 		};
-		merge(options, defaultOpts);
+		options = merge( defaultOpts, options);
 
 		this.tintWindow = new Window();
 
@@ -53,6 +53,8 @@ export class Win {
 		this.title = options.title;
 
 		this.tintWindow.backgroundColor = App.model.theme.window.backgroundColor;
+		this.tintWindow.width = options.width;
+		this.tintWindow.height = options.height;
 		this.tintWindow.visible = true;
 		this.tintWindow.addEventListener('maximize', this.maximizeHandler);
 		this.tintWindow.addEventListener('restore', this.restoreHandler);
@@ -61,7 +63,8 @@ export class Win {
 	private maximizeHandler = () => {
 		if(platformIsWin) {
 			this.closeButton.container.top = 5;
-			this.closeButton.container.right = 10;
+			this.closeButton.container.right = 9;
+			this.titleText.top = this.titleText.top + 6;
 		}
 	};
 
@@ -69,6 +72,7 @@ export class Win {
 		if(platformIsWin) {
 			this.closeButton.container.top = 1;
 			this.closeButton.container.right = 5;
+			this.titleText.top = this.titleText.top - 6;
 		}
 	};
 
@@ -83,12 +87,12 @@ export class Win {
 		var win = this.tintWindow;
 
 		var titleFont = new Font('Helvetica', 14);
-		titleFont.size = 14;
 		var titleText = this.titleText = new TextInput();
 		titleText.readonly = true;
 		titleText.textcolor = App.model.theme.window.titleTextColor;
 		titleText.value = '';
-		titleText.top = titleText.left = titleText.right = 0;
+		titleText.top = 3;
+		titleText.left = titleText.right = 0;
 		titleText.alignment = 'center';
 		titleText.font = titleFont;
 
@@ -97,17 +101,18 @@ export class Win {
 		var winChrome = new $.System.Windows.Shell.WindowChrome;
 
 		var winChromeGlassFrameThickness = new $.System.Windows.Thickness;
-		winChromeGlassFrameThickness.left = winChromeGlassFrameThickness.right = winChromeGlassFrameThickness.top = 0;
-		winChromeGlassFrameThickness.bottom = 1;
+		winChromeGlassFrameThickness.Left = winChromeGlassFrameThickness.Right = winChromeGlassFrameThickness.Top = 0;
+		winChromeGlassFrameThickness.Bottom = 1;
 
 		var winChromeResizeBorderThickness = new $.System.Windows.Thickness;
-		winChromeResizeBorderThickness.left = winChromeResizeBorderThickness.right = winChromeResizeBorderThickness.top = winChromeResizeBorderThickness.bottom = 5;
+		winChromeResizeBorderThickness.Left = winChromeResizeBorderThickness.Right = winChromeResizeBorderThickness.Top = winChromeResizeBorderThickness.Bottom = 5;
 
 		var winChromeCornerRad = new $.System.Windows.CornerRadius;
 		winChromeCornerRad.TopLeft = winChromeCornerRad.TopRight = winChromeCornerRad.BottomLeft = winChromeCornerRad.BottomRight = 2;
 
 		winChrome.CaptionHeight = 25;
 		winChrome.GlassFrameThickness = winChromeGlassFrameThickness;
+		winChrome.ResizeBorderThickness = winChromeResizeBorderThickness;
 		winChrome.CornerRadius = winChromeCornerRad;
 
 		$.System.Windows.Shell.WindowChrome.SetWindowChrome(win.native, winChrome);
@@ -119,7 +124,7 @@ export class Win {
 		});
 		var closeButtonCont = closeButton.container;
 		closeButtonCont.top = 1;
-		closeButtonCont.right = 5;
+		closeButtonCont.right = 3;
 		win.appendChild(closeButtonCont);
 		this.closeButton = closeButton;
 

@@ -1,4 +1,5 @@
 declare var require, global;
+require('source-map-support').install();
 require('Common');
 var json = require('jsonfile');
 var os = require('os');
@@ -51,4 +52,7 @@ global.Platforms = Platforms;
 App.initialize();
 var Win = require('./window-components/Win.js');
 
-var win = new Win();
+var win = new Win({
+	width: 1471,
+	height: 978
+});

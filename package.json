@@ -16,7 +16,8 @@
   "dependencies": {
     "chromium": "^3.2171.3004",
     "jsonfile": "^2.0.1",
-    "merge": "^1.2.0"
+    "merge": "^1.2.0",
+    "source-map-support": "^0.3.1"
   },
   "devDependencies": {
     "grunt": "^0.4.5",

@@ -30,7 +30,7 @@ export class CaptionButton {
 			height: 20,
 			onClick: () => {}
 		};
-		merge(options, defaultOpts);
+		options = merge(defaultOpts, options);
 		this.imageWell = new ImageWell();
 		this.imageWell.width = options.width;
 		this.imageWell.height = options.height;

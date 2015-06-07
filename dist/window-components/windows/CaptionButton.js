@@ -7,7 +7,7 @@ var CaptionButton = (function () {
             height: 20,
             onClick: function () { }
         };
-        merge(options, defaultOpts);
+        options = merge(defaultOpts, options);
         this.imageWell = new ImageWell();
         this.imageWell.width = options.width;
         this.imageWell.height = options.height;
