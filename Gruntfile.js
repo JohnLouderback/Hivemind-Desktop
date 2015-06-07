@@ -17,7 +17,7 @@ module.exports = function(grunt) {
 		copy: {
 			temp: {
 				expand: true,
-				src: ['images/**/*', 'themes/**/*', 'resources/**/*', 'tectonic/**/*'],
+				src: ['package.json', 'images/**/*', 'themes/**/*', 'resources/**/*', 'tectonic/**/*'],
 				dest: 'dist/'
 			}
 		}

@@ -55,9 +55,22 @@ export class Win {
 		this.tintWindow.backgroundColor = App.model.theme.window.backgroundColor;
 		this.tintWindow.width = options.width;
 		this.tintWindow.height = options.height;
+		this.center();
 		this.tintWindow.visible = true;
 		this.tintWindow.addEventListener('maximize', this.maximizeHandler);
 		this.tintWindow.addEventListener('restore', this.restoreHandler);
+	}
+
+	public center() {
+		var win =  this.tintWindow;
+		var winWidth = win.width;
+		var winHeight = win.height;
+		var screen: ActiveScreen = Screens.active;
+		var screenWidth = screen.visibleBounds.width;
+		var screenHeight = screen.visibleBounds.height;
+
+		win.x = (screenWidth / 2) - (winWidth / 2);
+		win.y = (screenHeight / 2) - (winHeight / 2);
 	}
 
 	private maximizeHandler = () => {
@@ -78,9 +91,15 @@ export class Win {
 
 	private applyWindowChromeOsx() {
 		var win = this.tintWindow;
-		win.appearance = App.model.theme.window.appearance;
-		win.extendIntoTitle = true;
-		win.titleTransparent = true;
+		win.canBeFullscreen = true;
+
+		if (App.model.runtime.osx.isYosemiteOrGreater) {
+			win.appearance = App.model.theme.window.appearance;
+			win.extendIntoTitle = true;
+			win.titleTransparent = true;
+		} else {
+			win.textured = false;
+		}
 	}
 
 	private applyWindowChromeWindows() {

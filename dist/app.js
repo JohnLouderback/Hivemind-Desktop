@@ -2,6 +2,7 @@ require('source-map-support').install();
 require('Common');
 var json = require('jsonfile');
 var os = require('os');
+var osVersion = parseInt(os.release().substring(0, os.release().indexOf('.')));
 var Platforms;
 (function (Platforms) {
     Platforms[Platforms["WIN"] = 0] = "WIN";
@@ -21,9 +22,17 @@ var App = (function () {
             return Platforms.WIN;
         }
     };
+    App.isYosemiteOrGreater = function () {
+        return ((App.getPlatform() === Platforms.OSX) && osVersion >= 14);
+    };
     App.model = {
         runtime: {
-            platform: App.getPlatform()
+            platform: App.getPlatform(),
+            version: osVersion,
+            osx: {
+                isOsx: (App.getPlatform() === Platforms.OSX),
+                isYosemiteOrGreater: App.isYosemiteOrGreater()
+            }
         },
         theme: json.readFileSync('themes/dark/theme.json'),
         resourceStrings: json.readFileSync('resources/english.json'),
