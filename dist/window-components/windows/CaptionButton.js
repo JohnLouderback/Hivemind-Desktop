@@ -5,7 +5,6 @@ var CaptionButton = (function () {
         var _this = this;
         this.fade = function () {
             _this.imageWellHover.alpha -= 0.33333333;
-            console.log(_this.imageWellHover.alpha);
             if (_this.imageWellHover.alpha > 0) {
                 setTimeout(_this.fade, 42);
             }
@@ -40,15 +39,12 @@ var CaptionButton = (function () {
         this.container.appendChild(this.imageWellHover);
         this.container.addEventListener('mouseenter', function () {
             _this.imageWellHover.alpha = 1;
-            console.log('show');
         });
         this.container.addEventListener('mouseexit', function () {
             if (_this.fadeOut) {
-                console.log('fade');
                 _this.fade();
             }
             else {
-                console.log('hide');
                 _this.imageWellHover.alpha = 0;
             }
         });
