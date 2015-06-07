@@ -22,6 +22,7 @@ interface WindowOptions {
 export class Win {
 	private tintWindow;
 	private closeButton; // The close button for Windows
+	private captionButtons; // The container for caption buttons on Windows
 	private titleText; // The title text for Windows
 	public get title() {
 		return this.tintWindow.title;
@@ -75,17 +76,17 @@ export class Win {
 
 	private maximizeHandler = () => {
 		if(platformIsWin) {
-			this.closeButton.container.top = 5;
-			this.closeButton.container.right = 9;
-			this.titleText.top = this.titleText.top + 6;
+			this.captionButtons.top = 5;
+			this.captionButtons.right = 9;
+			this.titleText.top = 9;
 		}
 	};
 
 	private restoreHandler = () => {
 		if(platformIsWin) {
-			this.closeButton.container.top = 1;
-			this.closeButton.container.right = 5;
-			this.titleText.top = this.titleText.top - 6;
+			this.captionButtons.top = 1;
+			this.captionButtons.right = 5;
+			this.titleText.top = 3;
 		}
 	};
 
@@ -136,18 +137,53 @@ export class Win {
 
 		$.System.Windows.Shell.WindowChrome.SetWindowChrome(win.native, winChrome);
 
+		var captionButtons = this.captionButtons = new Container();
+
+		// Close Button
 		var closeButton = new CaptionButton({
+			width: 50,
+			image: 'app://images/close-button.png',
+			hoverImage: 'app://images/close-button-hover.png',
 			onClick: () => {
 				win.destroy();
 			}
 		});
-		var closeButtonCont = closeButton.container;
-		closeButtonCont.top = 1;
-		closeButtonCont.right = 3;
-		win.appendChild(closeButtonCont);
 		this.closeButton = closeButton;
+		closeButton.container.left = 60;
+		captionButtons.appendChild(closeButton.container);
 
-		$.System.Windows.Shell.WindowChrome.SetIsHitTestVisibleInChrome(closeButtonCont.nativeView, true);
+		// Maximize Button
+		var maximizeButton = new CaptionButton({
+			fadeOut: true,
+			hoverImage: 'app://images/maximize-button.png',
+			onClick: () => {
+				if (win.state !== 'maximized') {
+					win.state = 'maximized';
+				} else {
+					win.state = 'normal';
+				}
+			}
+		});
+		maximizeButton.container.left = 30;
+		captionButtons.appendChild(maximizeButton.container);
+
+		// Minimize Button
+		var minimizeButton = new CaptionButton({
+			fadeOut: true,
+			hoverImage: 'app://images/minimize-button.png',
+			onClick: () => {
+					win.state = 'minimized';
+			}
+		});
+		minimizeButton.container.left = 0;
+		captionButtons.appendChild(minimizeButton.container);
+
+		captionButtons.top = 1;
+		captionButtons.right = 3;
+		captionButtons.width = 110;
+		win.appendChild(captionButtons);
+
+		$.System.Windows.Shell.WindowChrome.SetIsHitTestVisibleInChrome(captionButtons.nativeView, true);
 	}
 }
 module.exports = Win;

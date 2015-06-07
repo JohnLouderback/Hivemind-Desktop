@@ -2,14 +2,6 @@
 var merge = require('merge');
 var CaptionButton = (function () {
     function CaptionButton(options) {
-        var _this = this;
-        this.fade = function () {
-            _this.imageWellHover.alpha -= 0.33333333;
-            console.log(_this.imageWellHover.alpha);
-            if (_this.imageWellHover.alpha > 0) {
-                setTimeout(_this.fade, 42);
-            }
-        };
         var defaultOpts = {
             width: 30,
             height: 20,
@@ -38,18 +30,16 @@ var CaptionButton = (function () {
         this.container.height = options.height;
         this.container.appendChild(this.imageWell);
         this.container.appendChild(this.imageWellHover);
+        var thisBtn = this;
         this.container.addEventListener('mouseenter', function () {
-            _this.imageWellHover.alpha = 1;
-            console.log('show');
+            thisBtn.imageWellHover.alpha = 1;
         });
         this.container.addEventListener('mouseexit', function () {
-            if (_this.fadeOut) {
-                console.log('fade');
-                _this.fade();
+            if (thisBtn.fadeOut) {
+                thisBtn.fade();
             }
             else {
-                console.log('hide');
-                _this.imageWellHover.alpha = 0;
+                thisBtn.imageWellHover.alpha = 0;
             }
         });
         this.container.addEventListener('mouseup', function () {
@@ -76,6 +66,12 @@ var CaptionButton = (function () {
         enumerable: true,
         configurable: true
     });
+    CaptionButton.prototype.fade = function () {
+        this.imageWellHover.alpha -= 0.05;
+        if (this.imageWellHover.alpha > 0) {
+            setTimeout(this.fade, 42);
+        }
+    };
     return CaptionButton;
 })();
 exports.CaptionButton = CaptionButton;

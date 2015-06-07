@@ -15,15 +15,15 @@ var Win = (function () {
         var _this = this;
         this.maximizeHandler = function () {
             if (platformIsWin) {
-                _this.captionButtons.top = 5;
-                _this.captionButtons.right = 9;
+                _this.closeButton.container.top = 5;
+                _this.closeButton.container.right = 9;
                 _this.titleText.top = 9;
             }
         };
         this.restoreHandler = function () {
             if (platformIsWin) {
-                _this.captionButtons.top = 1;
-                _this.captionButtons.right = 5;
+                _this.closeButton.container.top = 1;
+                _this.closeButton.container.right = 5;
                 _this.titleText.top = 3;
             }
         };
@@ -114,41 +114,36 @@ var Win = (function () {
         var closeButton = new CaptionButton({
             width: 50,
             image: 'app://images/close-button.png',
-            hoverImage: 'app://images/close-button-hover.png',
+            imageHover: 'app://images/close-button-hover.png',
             onClick: function () {
                 win.destroy();
             }
         });
-        this.closeButton = closeButton;
-        closeButton.container.left = 60;
-        captionButtons.appendChild(closeButton.container);
         var maximizeButton = new CaptionButton({
             fadeOut: true,
-            hoverImage: 'app://images/maximize-button.png',
+            imageHover: 'app://images/maximize-button.png',
             onClick: function () {
-                if (win.state !== 'maximized') {
-                    win.state = 'maximized';
+                if (win.native.WindowState == $.System.Windows.WindowState.Normal) {
+                    win.native.WindowState = $.System.Windows.WindowState.Maximized;
                 }
                 else {
-                    win.state = 'normal';
+                    win.native.WindowState = $.System.Windows.WindowState.Normal;
                 }
             }
         });
-        maximizeButton.container.left = 30;
         captionButtons.appendChild(maximizeButton.container);
         var minimizeButton = new CaptionButton({
             fadeOut: true,
-            hoverImage: 'app://images/minimize-button.png',
+            imageHover: 'app://images/minimize-button.png',
             onClick: function () {
-                win.state = 'minimized';
+                win.native.WindowState = $.System.Windows.WindowState.Minimized;
             }
         });
-        minimizeButton.container.left = 0;
         captionButtons.appendChild(minimizeButton.container);
         captionButtons.top = 1;
         captionButtons.right = 3;
-        captionButtons.width = 110;
         win.appendChild(captionButtons);
+        this.closeButton = closeButton;
         $.System.Windows.Shell.WindowChrome.SetIsHitTestVisibleInChrome(captionButtons.nativeView, true);
     };
     return Win;
